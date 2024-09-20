@@ -1,0 +1,42 @@
+Para instalar el schedule como servicio windows.
+
+1. Compilar el proyecto
+
+npm run build
+
+2. En la carpeta resultante 'dist'
+
+Agregar los siguientear archivos .js
+
+- Para instalar el servicio windows
+const Service = require('node-windows').Service;
+const svc = new Service({
+  name: 'MyNestApp', // Nombre del servicio
+  description: 'This is my NestJS application running as a Windows service.',
+  script: 'main.js', // Ruta al archivo principal compilado de NestJS
+});
+// Escuchar el evento de instalación
+svc.on('install', () => {
+  svc.start();
+  console.log('Service installed and started!');
+});
+// Instalar el servicio
+svc.install();
+
+
+-Para desistalar el servicio windows
+const Service = require('node-windows').Service;
+
+// Crear un nuevo servicio para desinstalarlo
+const svc = new Service({
+  name: 'MyNestApp', // Nombre del servicio (debe coincidir con el nombre usado al instalar)
+  script: 'main.js',
+});
+
+// Escuchar el evento de desinstalación
+svc.on('uninstall', () => {
+  console.log('Service uninstalled successfully');
+});
+
+// Desinstalar el servicio
+svc.uninstall();
